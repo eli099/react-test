@@ -4,7 +4,7 @@ import axios from 'axios'
 const App = () => {
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get('https://animechan.xyz/api/random') // * <-- replace with your endpoint
+      const { data } = await axios.get('https://api.coincap.io/v2/rates') // * <-- replace with your endpoint
       console.log(data)
     }
     getData()
