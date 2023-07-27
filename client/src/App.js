@@ -13,7 +13,7 @@ const App = () => {
       try {
         // make a get request to the endpoint
         // await forces function to wait for the resolution before moving on
-        const { data } = await axios.get('https://api.coincap.io/v2/rates') // * <-- replace with your endpoint
+        const { data } = await axios.get('https://api.coincap.io/v2/assets') // * <-- replace with your endpoint
         console.log(data.data)
         setCurrencies(data.data)
       } catch (error) {
@@ -26,14 +26,23 @@ const App = () => {
 
   return (
     <main className="container">
-      <h1>Currencies</h1>
-      <ul>
+      <h1>Cryptocurrencies</h1>
+      <div className="currency-container">
         {currencies.map(currency => {
           // console.log(currency)
-          const { id, symbol, currencySymbol, type, rateUsd } = currency
-          return <li key={id}>{id} ({symbol}) | {currencySymbol}1 = ${rateUsd} / Type: {type}</li>
+          const { id, name, symbol, type, rateUsd, rank, explorer } = currency
+          return (
+            <div className='card' key={id}>
+              <div className="card-header">
+                {name} ({symbol}) / Type: {type}
+              </div>
+              <div className="card-info">
+                1 {symbol} = ${rateUsd}
+              </div>
+            </div>
+          )
         })}
-      </ul>
+      </div>
     </main>
   )
 }
