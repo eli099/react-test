@@ -11,6 +11,8 @@ const App = () => {
   // state to check if page is loading
   const [loading, setLoading] = useState(true)
 
+  // ? useEffect below runs once on initial render (never again [unless reloaded])
+
   useEffect(() => {
     // get data from a promise based http client
     // the client is Axios
