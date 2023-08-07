@@ -39,14 +39,17 @@ const App = () => {
   }, []) // empty array in dependencies causes the useEffect to only trigger once on the first render
 
   // ? useEffect to generate unique list of types to add to dropdown
-
   useEffect(() => {
     // run only if currencies has items in it
     if (!currencies.length) return
 
     // create filter list
+    // Create a filterArray variable to store currency types (fiat or crypto), without duplication
     const filterArray = []
+    // Loop through currencies - each is checked to see if its type is already in filterArray
+    // If present, we do nothing (''), if not present, it's added as a new type
     currencies.forEach(currency => filterArray.includes(currency.type) ? '' : filterArray.push(currency.type))
+    // set filterList to be unique value (type) array
     setFilterList(filterArray)
   }, [currencies])
 
