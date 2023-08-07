@@ -7,7 +7,7 @@ const App = () => {
   const [currencies, setCurrencies] = useState([])
 
   const [filteredCurrencies, setFilteredCurrencies] = useState([])
-  const [ filterList, setFilterList ] = useState([])
+  const [filterList, setFilterList] = useState([])
 
   // ? Application State
   // checking if there are errors
@@ -53,16 +53,27 @@ const App = () => {
     setFilterList(filterArray)
   }, [currencies])
 
+  // ? Function to trigger on change of the filter dropdown
+  // Filter method to check value of the filter dropdown and return list of matching types of currency
+  const filterCurrencies = (e) => {
+    console.log('filterCurrencies e target ->', e.target.value)
+    const filteredArray = currencies.filter(currency => currency.type === e.target.value)
+    setFilteredCurrencies(filteredArray)
+    console.log(filteredArray)
+  }
+
   return (
     <main className="container">
-      <h1>Cryptocurrencies</h1>
+      <h1>Currencies</h1>
       {/* Filter Dropdown */}
 
 
       <div id="filters-container">
-        <select name="filters" id="filters">
+        <select name="filters" id="filters" onChange={filterCurrencies}>
           <option value="all">All Currencies</option>
-          {filterList.map((currency, index) => <option key={index}>{currency}</option>)}
+          {filterList.map((type, index) => {
+            return <option value={type} key={index}>{type}</option>
+          })}
         </select>
       </div>
 
@@ -78,8 +89,7 @@ const App = () => {
           </div>
           :
           <div className="currency-container">
-            {currencies.map(currency => {
-              // console.log(currency)
+            {(filteredCurrencies.length > 0 ? filteredCurrencies : currencies).map(currency => {
               const { id, name, symbol, type, rateUsd, rank, explorer } = currency
               return (
                 <div className='card' key={id}>
