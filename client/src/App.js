@@ -3,11 +3,15 @@ import axios from 'axios'
 
 const App = () => {
 
+  // ? Currency State
   const [currencies, setCurrencies] = useState([])
 
+  const [filteredCurrencies, setFilteredCurrencies] = useState([])
+  const [ filterList, setFilterList ] = useState([])
+
+  // ? Application State
   // checking if there are errors
   const [errors, setErrors] = useState(false)
-
   // state to check if page is loading
   const [loading, setLoading] = useState(true)
 
@@ -21,7 +25,7 @@ const App = () => {
       try {
         // make a get request to the endpoint
         // await forces function to wait for the resolution before moving on
-        const { data } = await axios.get('https://api.coincap.io/v2/assets') // * <-- replace with your endpoint
+        const { data } = await axios.get('https://api.coincap.io/v2/rates') // * <-- replace with your endpoint
         console.log(data.data)
         setCurrencies(data.data)
       } catch (error) {
@@ -34,9 +38,32 @@ const App = () => {
     getData()
   }, []) // empty array in dependencies causes the useEffect to only trigger once on the first render
 
+  // ? useEffect to generate unique list of types to add to dropdown
+
+  useEffect(() => {
+    // run only if currencies has items in it
+    if (!currencies.length) return
+
+    // create filter list
+    const filterArray = []
+    currencies.forEach(currency => filterArray.includes(currency.type) ? '' : filterArray.push(currency.type))
+    setFilterList(filterArray)
+  }, [currencies])
+
   return (
     <main className="container">
       <h1>Cryptocurrencies</h1>
+      {/* Filter Dropdown */}
+
+
+      <div id="filters-container">
+        <select name="filters" id="filters">
+          <option value="all">All Currencies</option>
+          {filterList.map((currency, index) => <option key={index}>{currency}</option>)}
+        </select>
+      </div>
+
+
       {loading ?
         <div className="loading">
           <p>Loading...</p>
