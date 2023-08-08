@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+// Import Components
+import Filters from './components/Filters'
+import CurrencyList from './components/CurrencyList'
+
 const App = () => {
 
   // ? Currency State
@@ -65,18 +69,6 @@ const App = () => {
   return (
     <main className="container">
       <h1>Currencies</h1>
-      {/* Filter Dropdown */}
-
-
-      <div id="filters-container">
-        <select name="filters" id="filters" onChange={filterCurrencies}>
-          <option value="all">All Currencies</option>
-          {filterList.map((type, index) => {
-            return <option value={type} key={index}>{type}</option>
-          })}
-        </select>
-      </div>
-
 
       {loading ?
         <div className="loading">
@@ -88,21 +80,13 @@ const App = () => {
             <p>Currencies not loaded. Please try again.</p>
           </div>
           :
-          <div className="currency-container">
-            {(filteredCurrencies.length > 0 ? filteredCurrencies : currencies).map(currency => {
-              const { id, name, symbol, type, rateUsd, rank, explorer } = currency
-              return (
-                <div className='card' key={id}>
-                  <div className="card-header">
-                    {name} ({symbol}) / Type: {type}
-                  </div>
-                  <div className="card-info">
-                    1 {symbol} = ${rateUsd}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+          <>
+            {/* Filter Dropdown */}
+            <Filters filterCurrencies={filterCurrencies} filterList={filterList} />
+
+            {/* Currency Container */}
+            <CurrencyList filterCurrencies={filterCurrencies} filterList={filterList} />
+          </>
       }
     </main>
   )
